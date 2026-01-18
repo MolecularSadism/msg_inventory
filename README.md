@@ -18,8 +18,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-msg_inventory = "0.1"
-bevy = "0.16"
+msg_inventory = "0.2"
+bevy = "0.17"
 ```
 
 ## Quick Start
@@ -145,6 +145,7 @@ impl InventoryItemColor for Spell {
 
 | `msg_inventory` | Bevy |
 |-----------------|------|
+| 0.2             | 0.17 |
 | 0.1             | 0.16 |
 
 ## License
