@@ -133,13 +133,15 @@ mod tests {
         HiddenDebugSpell,
     }
 
+    #[allow(dead_code)]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     enum TestPerk {
-        HealthBoost,
-        SpeedBoost,
-        DamageBoost,
+        Health,
+        Speed,
+        Damage,
     }
 
+    #[allow(dead_code)]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     enum TestConsumable {
         HealthPotion,
@@ -147,6 +149,7 @@ mod tests {
         Antidote,
     }
 
+    #[allow(dead_code)]
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     enum TestQuestItem {
         AncientKey,
@@ -168,9 +171,9 @@ mod tests {
     impl InventoryItem for TestPerk {
         fn icon_path(&self) -> &str {
             match self {
-                TestPerk::HealthBoost => "icons/perks/health.png",
-                TestPerk::SpeedBoost => "icons/perks/speed.png",
-                TestPerk::DamageBoost => "icons/perks/damage.png",
+                TestPerk::Health => "icons/perks/health.png",
+                TestPerk::Speed => "icons/perks/speed.png",
+                TestPerk::Damage => "icons/perks/damage.png",
             }
         }
     }
@@ -222,17 +225,17 @@ mod tests {
     impl InventoryItemData for TestPerk {
         fn display_name(&self) -> &str {
             match self {
-                TestPerk::HealthBoost => "Health Boost",
-                TestPerk::SpeedBoost => "Speed Boost",
-                TestPerk::DamageBoost => "Damage Boost",
+                TestPerk::Health => "Health Boost",
+                TestPerk::Speed => "Speed Boost",
+                TestPerk::Damage => "Damage Boost",
             }
         }
 
         fn description(&self) -> &str {
             match self {
-                TestPerk::HealthBoost => "Increases maximum health.",
-                TestPerk::SpeedBoost => "Increases movement speed.",
-                TestPerk::DamageBoost => "Increases damage dealt.",
+                TestPerk::Health => "Increases maximum health.",
+                TestPerk::Speed => "Increases movement speed.",
+                TestPerk::Damage => "Increases damage dealt.",
             }
         }
     }
@@ -285,7 +288,7 @@ mod tests {
     #[test]
     fn test_inventory_item_icon_path() {
         assert_eq!(TestSpell::Fireball.icon_path(), "icons/spells/fireball.png");
-        assert_eq!(TestPerk::HealthBoost.icon_path(), "icons/perks/health.png");
+        assert_eq!(TestPerk::Health.icon_path(), "icons/perks/health.png");
         assert_eq!(
             TestConsumable::HealthPotion.icon_path(),
             "icons/items/health_potion.png"
@@ -306,7 +309,7 @@ mod tests {
     #[test]
     fn test_inventory_item_is_clone() {
         let spell = TestSpell::Fireball;
-        let spell_clone = spell.clone();
+        let spell_clone = spell;
         assert_eq!(spell, spell_clone);
     }
 
@@ -318,7 +321,7 @@ mod tests {
     fn test_inventory_item_data_display_name() {
         assert_eq!(TestSpell::Fireball.display_name(), "Fireball");
         assert_eq!(TestSpell::IceShield.display_name(), "Ice Shield");
-        assert_eq!(TestPerk::HealthBoost.display_name(), "Health Boost");
+        assert_eq!(TestPerk::Health.display_name(), "Health Boost");
     }
 
     #[test]
@@ -327,10 +330,7 @@ mod tests {
             TestSpell::Fireball.description(),
             "Launches a ball of fire at enemies."
         );
-        assert_eq!(
-            TestPerk::SpeedBoost.description(),
-            "Increases movement speed."
-        );
+        assert_eq!(TestPerk::Speed.description(), "Increases movement speed.");
     }
 
     #[test]
@@ -343,7 +343,7 @@ mod tests {
     #[test]
     fn test_inventory_item_data_default_is_hidden() {
         // TestPerk doesn't override is_hidden, so it should use the default (false)
-        assert!(!TestPerk::HealthBoost.is_hidden());
+        assert!(!TestPerk::Health.is_hidden());
     }
 
     // =========================================================================
@@ -380,7 +380,7 @@ mod tests {
         {
         }
 
-        accepts_counted(TestPerk::HealthBoost);
+        accepts_counted(TestPerk::Health);
         accepts_counted(TestConsumable::HealthPotion);
     }
 
@@ -390,7 +390,7 @@ mod tests {
             std::any::type_name::<T::Count>()
         }
 
-        assert_eq!(get_count_type_name(TestPerk::HealthBoost), "u8");
+        assert_eq!(get_count_type_name(TestPerk::Health), "u8");
     }
 
     #[test]
@@ -440,7 +440,7 @@ mod tests {
     #[test]
     fn test_card_color_clone() {
         let color = InventoryCardColor::Green;
-        let cloned = color.clone();
+        let cloned = color;
         assert_eq!(color, cloned);
     }
 
@@ -476,8 +476,8 @@ mod tests {
 
     #[test]
     fn test_perk_card_color() {
-        assert_eq!(TestPerk::HealthBoost.card_color(), InventoryCardColor::Purple);
-        assert_eq!(TestPerk::SpeedBoost.card_color(), InventoryCardColor::Purple);
+        assert_eq!(TestPerk::Health.card_color(), InventoryCardColor::Purple);
+        assert_eq!(TestPerk::Speed.card_color(), InventoryCardColor::Purple);
     }
 
     #[test]
@@ -557,8 +557,13 @@ mod tests {
         let _: InventoryCardColor = InventoryCardColor::Blue;
 
         // Trait bounds check - these compile if prelude exports correctly
-        fn _check_traits<T: InventoryItem + InventoryItemData + InventoryDraggable + InventoryCounted + InventoryItemColor>(
-        ) {
+        fn _check_traits<
+            T: InventoryItem
+                + InventoryItemData
+                + InventoryDraggable
+                + InventoryCounted
+                + InventoryItemColor,
+        >() {
         }
     }
 
@@ -587,7 +592,7 @@ mod tests {
 
     #[test]
     fn test_counted_item_workflow() {
-        let perk = TestPerk::HealthBoost;
+        let perk = TestPerk::Health;
 
         // In a real system, you'd store the count separately
         let level: <TestPerk as InventoryCounted>::Count = 3;
@@ -612,7 +617,7 @@ mod tests {
         assert!(spell_card.contains("icons/spells/fireball.png"));
         assert!(spell_card.contains("Red"));
 
-        let perk_card = render_item_card(TestPerk::HealthBoost);
+        let perk_card = render_item_card(TestPerk::Health);
         assert!(perk_card.contains("icons/perks/health.png"));
         assert!(perk_card.contains("Purple"));
     }
@@ -620,7 +625,11 @@ mod tests {
     #[test]
     fn test_filter_hidden_items() {
         fn filter_visible<T: InventoryItemData + Copy>(items: &[T]) -> Vec<T> {
-            items.iter().filter(|item| !item.is_hidden()).copied().collect()
+            items
+                .iter()
+                .filter(|item| !item.is_hidden())
+                .copied()
+                .collect()
         }
 
         let spells = [

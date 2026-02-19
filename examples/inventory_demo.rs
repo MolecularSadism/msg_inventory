@@ -273,11 +273,7 @@ fn setup_inventory(mut commands: Commands) {
     commands.spawn((Spell::Heal, InPlayerInventory));
 
     // Add some perks with levels
-    commands.spawn((
-        Perk::HealthBoost,
-        ItemCount::<Perk>(3),
-        InPlayerInventory,
-    ));
+    commands.spawn((Perk::HealthBoost, ItemCount::<Perk>(3), InPlayerInventory));
     commands.spawn((
         Perk::CriticalStrike,
         ItemCount::<Perk>(5),

@@ -1,5 +1,10 @@
 # msg_inventory
 
+[![CI](https://github.com/MolecularSadism/msg_inventory/workflows/CI/badge.svg)](https://github.com/MolecularSadism/msg_inventory/actions)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](https://github.com/MolecularSadism/msg_inventory#license)
+[![Bevy](https://img.shields.io/badge/Bevy-0.18-blue.svg)](https://bevyengine.org/)
+[![Rust](https://img.shields.io/badge/rust-2024%20edition-orange.svg)](https://www.rust-lang.org/)
+
 Inventory system traits for displaying enum-based items in game inventories.
 
 This crate provides traits that can be implemented on enums to make them displayable in inventory UIs. The design is data-driven and supports various item types with different display behaviors.
